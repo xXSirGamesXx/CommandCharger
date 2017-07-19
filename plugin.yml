@@ -1,20 +1,20 @@
-name: ExamplePlugin
-main: PocketEssential\ExamplePlugin\ExamplePlugin
+name: CommandCharger
+main: xXSirGamesXx\CommandCharger\Main
 api:
 - 2.0.0
 - 3.0.0-ALPHA5
 - 3.0.0-ALPHA6
 - 3.0.0-ALPHA7
-version: 1.0.0
+version: 1.0.0-INDEV
 description: "Charge Players money for using specific commands"
 
 commands:
   commandcharge:
     description: "example command description"
-    permission: example.permission
+    permission: cc.cmd
     aliases: ["cc"]
 
 permissions:
-  cc.use:
-    default: true
+  cc.cmd:
+    default: op
     description: "Example permission description"

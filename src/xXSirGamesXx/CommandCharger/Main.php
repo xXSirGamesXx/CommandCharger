@@ -9,6 +9,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat as C;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
+use onebone\economyapi\EconomyAPI;
 
 class Main extends PluginBase implements Listener {
 	const PREFIX_SUCCESS = C::WHITE . "[" . C::RED . "CommandCharger" . C::WHITE . "] " . C::GREEN; 
@@ -34,6 +35,6 @@ class Main extends PluginBase implements Listener {
 	}
 	public function onPCommand(PlayerCommandPreprocessEvent $e){
 		$player = $e->getPlayer();
-		$message = $e->getMessage();
+		$msg = $e->getMessage();
 	}
 }

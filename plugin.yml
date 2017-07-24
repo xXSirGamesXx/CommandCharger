@@ -4,6 +4,7 @@ api: 3.0.0-ALPHA7
 version: 1.1.0-INDEV
 author: xxsirbutterxx
 description: "Charge Players money for using specific commands"
+depend: ["EconomyAPI"]
 
 commands:
   commandcharger:

@@ -25,34 +25,48 @@ class Main extends PluginBase implements Listener {
 	
 	public function onDisable() { 
 		$this->getLogger()->info("CommandCharger by xXSirGamesXx disabled!");
-		$this->saveDefaultCnfig();
+		$this->saveDefaultConfig();
 	}
 	
-	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
-		switch($command->getName()){
-			case "commandcharger":
-				$sender->sendMessage(self::PREFIX . "CommandCharger by xXSirGamesXx");
+	public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args) : bool{
+		if($cmd->getName() === "commandcharger"){
+			if(!$sender->hasPermission("cc.cmd")){
+				$sender->sendMessage(self::PREFIX . "You dont have permission to use /cc");
 				return true;
-			default:
-				return false;
+			}
+			if(count($args) === 0){
+				$sender->sendMessage(self::PREFIX . "/cc help");
+			}
+			switch(strtolower($args[0])){
+				case 'help':
+					$sender->sendMessage(C::GREEN . "----==" . C::WHITE . "[" . C::RED . "CommandCharger" . C::WHITE . "]" . C::GREEN . "==----");
+					$sender->sendMessage(C::GREEN . "/cc help" . C::WHITE . "CC Help page.");
+				return true;
+					break;
+				case 'info':
+					$sender->sendMessage(self::PREFIX . "CommandCharger by xXSirGamesXx");
+					break;
+			}
 		}
 	}
 	public function onPCommand(PlayerCommandPreprocessEvent $e){
 		$player = $e->getPlayer();
 		$msg = $e->getMessage();
-		$money = $this->api->myMoney($player);
+		$money = EconomyAPI::getInstance()->myMoney($player);
 		$cfg = $this->getConfig()->getAll();
 		foreach($cfg["Commands"] as $c){
 			if(!$player->hasPermission("cc.charge.avoid")){
-				if(strtolower($msg) == $c["CMD"] and $this->api->myMoney($player) >= $c["Price"]){
-					$player->sendMessage(self::PREFIX . "You have been charged " . C::YELLOW . $c["Price"] ."$" . C::GREEN . "For using " . $c["CMD"]);
-					$this->api->reduceMoney($player, $c["Price"]);
+				if(strtolower($msg) == $c['CMD']){
+					if(EconomyAPI::getInstance()->myMoney($player) >= $c['Price']){
+						$player->sendMessage(self::PREFIX . "You have been charged " . C::YELLOW . $c["Price"] ."$" . C::GREEN . "For using " . $c["CMD"]);
+						EconomyAPI::getInstance()->reduceMoney($player, $c['Price']);
+					}else{
+						$player->sendMessage(C::PREFIX . "You dont have enough money for this command.");
+						$e->setCancelled(true);
+					}
 				}else{
-					$player->sendMessage(self::PREFIX . C::RED . "You do not have enough money for " . C::YELLOW . $c["CMD"]);
-					$e->setCancelled(true);
+				return true;
 				}
-			}else{
-				$player->sendMessage(self::PREFIX . "You were not charged for using " . C::AQUA . $c["CMD"]);
 			}
 		}
 				

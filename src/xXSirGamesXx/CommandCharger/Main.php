@@ -28,9 +28,13 @@ class Main extends PluginBase implements Listener {
 		$this->saveDefaultCnfig();
 	}
 	
-	public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args) : bool {
-		if($cmd->getName() == "commandcharge") { 
-			$sender->sendMessage(self::PREFIX . "CommandCharger by xXSirGamesXx.");
+	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
+		switch($command->getName()){
+			case "commandcharger":
+				$sender->sendMessage(self::PREFIX . "CommandCharger by xXSirGamesXx");
+				return true;
+			default:
+				return false;
 		}
 	}
 	public function onPCommand(PlayerCommandPreprocessEvent $e){
